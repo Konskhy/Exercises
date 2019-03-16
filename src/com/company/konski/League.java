@@ -2,7 +2,7 @@ package com.company.konski;
 
 import java.util.ArrayList;
 
-public class League<T extends Team> implements Comparable<T> {
+public class League<T extends Team>{
     private String name;
     private ArrayList<T> leagueTable = new ArrayList<>();
 
@@ -27,8 +27,4 @@ public class League<T extends Team> implements Comparable<T> {
         }
     }
 
-    @Override
-    public int compareTo(T team) {
-        return 0;
-    }
 }
