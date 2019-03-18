@@ -1,11 +1,12 @@
 package com.company.konski;
 
-public abstract class Team implements Comparable{
+public abstract class Team implements Comparable<Team>{
     String name;
     int wins;
     int loses;
     int draws;
     int gamesPlayed;
+
 
     public Team(String name) {
         this.name = name;
@@ -45,11 +46,9 @@ public abstract class Team implements Comparable{
         draws++;
         gamesPlayed++;
     }
-
-
+    @Override
     public int compareTo(Team team) {
-        if (Integer.valueOf(this.getName())>Integer.valueOf(team.getName())) return 1;
-        else if (Integer.valueOf(this.getName())<Integer.valueOf(team.getName())) return -1;
-        else return 0;
+        return ((this.getName().compareTo(team.getName())));
     }
+
 }
