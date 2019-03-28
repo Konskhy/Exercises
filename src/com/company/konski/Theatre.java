@@ -17,6 +17,10 @@ public class Theatre {
             }
         }
     }
+    public List<Seat> getSeats(){
+        return seats;
+    }
+
     public String getTheatreName() {
         return theatreName;
     }
@@ -33,8 +37,10 @@ public class Theatre {
         return true;}
     }
     public void listSeats(){
-        for (Seat seat:seats) System.out.println(seat.getSeatNumber());
+        for (Seat seat:seats) System.out.print("#"+seat.getSeatNumber()+" ");
+        System.out.println();
     }
+//todo implement comparable interface
 
     private class Seat{
         private final String seatNumber;
