@@ -15,7 +15,7 @@ public class Theatre {
             }
         }
     };
-    private double price;
+    private double price=10.00;
     public Theatre(String theatreName, int rows, int seatsPerRow){
         this.theatreName = theatreName;
         int lastRow = 'A'+rows-1;
@@ -24,7 +24,7 @@ public class Theatre {
                 if (i>='A'&&i<='C'){
                     if (j>=3&&j<=seatsPerRow-3) price=15.00;
                     else price=7.00;
-                } else price=10.00;
+                }
                 Seat seat = new Seat(i+String.format("%02d",j));
                 seats.add(seat);
             }
@@ -36,23 +36,30 @@ public class Theatre {
     public String getTheatreName() {
         return theatreName;
     }
-    //todo binary search
+
 
     public boolean reserveSeat(String requestedSeat) {
-        Seat reqSeat = null;
-        for (Seat seat : seats) {
-            if (seat.getSeatNumber().equals(requestedSeat))
-                reqSeat = seat;
-        }
-        if (reqSeat == null) {System.out.println
+        Seat reqSeat = new Seat(requestedSeat);
+        int i = Collections.binarySearch(seats, reqSeat);
+//        for (Seat seat : seats) {
+//            if (seat.getSeatNumber().equals(requestedSeat))
+//                reqSeat = seat;
+//        }
+        if (i<0) {System.out.println
             ("Seat doesn't exist");
             return false;
-        }else {reqSeat.reserve();
+        }else {seats.get(i).reserve();
         return true;}
     }
     public void listSeats(){
         for (Seat seat:seats) System.out.print("#"+seat.getSeatNumber()+" $"+seat.getSeatPrice()+" | ");
         System.out.println();
+    }
+    public void printReservations(){
+        System.out.println("Reserved seats:");
+        for (Seat seat:seats){
+            if (seat.reserved) System.out.print(" #"+seat.getSeatNumber());
+        }
     }
 
 
@@ -82,6 +89,7 @@ public class Theatre {
             System.out.println("Seat "+getSeatNumber()+" has been reserved, please pay "+getSeatPrice()+"$");
             return false;
         }
+
 
         @Override
         public int compareTo(Seat o) {

@@ -11,11 +11,16 @@ public class Main {
         odeon.listSeats();
         odeon.reserveSeat("B12");
         odeon.reserveSeat("B12");
+        odeon.reserveSeat("E2");
+        odeon.reserveSeat("A10");
+        odeon.reserveSeat("A11");
+        odeon.reserveSeat("H04");
         List<Theatre.Seat> listCopy = new ArrayList<>(odeon.seats);
         Collections.reverse(listCopy);
         printList(listCopy);
         Collections.sort(listCopy,Theatre.PRICE_COMP);
         printList(listCopy);
+        odeon.printReservations();
 
     }
 
