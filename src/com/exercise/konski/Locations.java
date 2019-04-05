@@ -14,6 +14,15 @@ public class Locations {
         this.exits = new HashMap<String,Integer>();
 
     }
+
+    public int getLocationID() {
+        return locationID;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
     public Map<String,Integer> getExits(){
         return new HashMap<>(exits);
     }
