@@ -21,7 +21,13 @@ public class Main {
         int loc=1;
         while (true){
             System.out.println(locations.get(loc).getDescription());
+            System.out.println("Available exits are: ");
+            locations.get(loc).printExits();
             String direction = sc.nextLine();
+            if (locations.get(loc).getExits().containsKey(direction.toUpperCase())) {
+                loc = locations.get(loc).getExits().get(direction.toUpperCase());
+//            }else if directionlk
+            }else System.out.println("You can't go that way");
         }
 
 
