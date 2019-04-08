@@ -12,6 +12,7 @@ public class Locations {
         this.locationID = locationID;
         this.description = description;
         this.exits = new HashMap<String,Integer>();
+        this.exits.put("Q",0);
 
     }
 
@@ -28,7 +29,8 @@ public class Locations {
     }
     public void printExits(){
         Map <String,Integer> exitsCopy = new HashMap<>(exits);
-        for (String s:exitsCopy.keySet()) System.out.println(s+",");
+        for (String s:exitsCopy.keySet()) System.out.print(s+",");
+        System.out.println();
 
     }
     public void addExit(String dir, int loc){
