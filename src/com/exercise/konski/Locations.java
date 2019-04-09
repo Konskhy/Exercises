@@ -8,6 +8,8 @@ public class Locations {
     private final String description;
     private final Map<String, Integer> exits;
 
+
+
     public Locations(int locationID, String description) {
         this.locationID = locationID;
         this.description = description;
