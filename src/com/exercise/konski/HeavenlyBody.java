@@ -38,13 +38,16 @@ public class HeavenlyBody {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (o == null || this.getClass() != o.getClass()) return false;
+        //if (o == null || this.getClass() != o.getClass()) return false;
+        if (o == null) return false;
         HeavenlyBody body = (HeavenlyBody) o;
-        return Objects.equals(getName(), body.getName());
+        if (body.bodyType.equals(((HeavenlyBody) o).bodyType)){
+        return Objects.equals(getName(), body.getName());}
+        else return false;
     }
 
     @Override
     public int hashCode() {
-        return this.getName().hashCode()+57;
+        return this.getName().hashCode()+this.bodyType.hashCode()+57;
     }
 }

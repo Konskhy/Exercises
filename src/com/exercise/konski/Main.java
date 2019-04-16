@@ -70,9 +70,17 @@ public class Main {
         solarSystem.put(tempStar.getName(),tempStar);
         stars.add(tempStar);
 
+
+        temp=new Planet("Pluto",488);
+        solarSystem.put(temp.getName(),temp);
+        planets.add(temp);
+        tempMoon=new Moon("Pluto",248);
+        solarSystem.put(temp.getName(),temp);
+
+
         System.out.println("Planets: " );
         for (HeavenlyBody planet:planets){
-            System.out.println("\t " + planet.getName());
+            System.out.println("\t " + planet.getName()+": "+planet.getOrbitalPeriod());
         }
 
         System.out.println("Moons: ");
@@ -83,12 +91,12 @@ public class Main {
         HeavenlyBody body = solarSystem.get("Jupiter");
         System.out.println("Moons of " + body.getName()+":");
         for (HeavenlyBody jupiterMoon:body.getSatellites()){
-            System.out.println(jupiterMoon.getName());
+            System.out.println("\t"+jupiterMoon.getName());
         }
 
         System.out.println("Solar system: ");
         for (String h:solarSystem.keySet()){
-            System.out.println(solarSystem.get(h).getName()+": " +solarSystem.get(h).getOrbitalPeriod());
+            System.out.println("\t"+solarSystem.get(h).getName()+": " +solarSystem.get(h).getOrbitalPeriod());
         }
 	}
 
