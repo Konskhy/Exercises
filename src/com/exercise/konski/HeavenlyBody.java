@@ -4,11 +4,12 @@ import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
-public class HeavenlyBody {
+public abstract class HeavenlyBody {
     private final String name;
     private final double orbitalPeriod;
     private final Set<HeavenlyBody> satellites;
     private final String bodyType;
+
 
     public HeavenlyBody(String name, double orbitalPeriod, String bodyType){
         this.name = name;
@@ -25,21 +26,22 @@ public class HeavenlyBody {
         return orbitalPeriod;
     }
 
-//    public boolean addMoon(HeavenlyBody moon){
-//        return satellites.add(moon);
-//    }
-//    public boolean addSatellite(HeavenlyBody satellite){
-//        return satellites.add(satellite);
-//    }
+    public boolean addSatellite(HeavenlyBody satellite){
+        return satellites.add(satellite);
+    }
+
+    public String getBodyType() {
+        return bodyType;
+    }
+
     public HashSet<HeavenlyBody> getSatellites(){
         return new HashSet<>(this.satellites);
     }
 
     @Override
-    public boolean equals(Object o) {
+    public final boolean equals(Object o) {
         if (this == o) return true;
-        //if (o == null || this.getClass() != o.getClass()) return false;
-        if (o == null) return false;
+        if (o == null || !(o instanceof HeavenlyBody)) return false;
         HeavenlyBody body = (HeavenlyBody) o;
         if (body.bodyType.equals(((HeavenlyBody) o).bodyType)){
         return Objects.equals(getName(), body.getName());}
@@ -47,7 +49,12 @@ public class HeavenlyBody {
     }
 
     @Override
-    public int hashCode() {
+    public final int hashCode() {
         return this.getName().hashCode()+this.bodyType.hashCode()+57;
+    }
+
+    @Override
+    public String toString() {
+        return  getName()+(" (")+getBodyType()+"): " + getOrbitalPeriod();
     }
 }
