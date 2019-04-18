@@ -5,21 +5,19 @@ import java.util.Objects;
 import java.util.Set;
 
 public abstract class HeavenlyBody {
-    private final String name;
     private final double orbitalPeriod;
     private final Set<HeavenlyBody> satellites;
-    private final String bodyType;
+    private final Key key;
 
 
     public HeavenlyBody(String name, double orbitalPeriod, String bodyType){
-        this.name = name;
+        this.key = new Key(name, bodyType);
         this.orbitalPeriod = orbitalPeriod;
-        this.bodyType = bodyType;
         this.satellites = new HashSet<>();
     }
 
-    public String getName() {
-        return name;
+    public Key getKey() {
+        return key;
     }
 
     public double getOrbitalPeriod() {
@@ -30,31 +28,64 @@ public abstract class HeavenlyBody {
         return satellites.add(satellite);
     }
 
-    public String getBodyType() {
-        return bodyType;
-    }
-
     public HashSet<HeavenlyBody> getSatellites(){
         return new HashSet<>(this.satellites);
+    }
+
+    public static  Key makeKey(String name, String bodyType){
+        return new Key(name,bodyType);
+
     }
 
     @Override
     public final boolean equals(Object o) {
         if (this == o) return true;
-        if (o == null || !(o instanceof HeavenlyBody)) return false;
+        if (!(o instanceof HeavenlyBody)) return false;
         HeavenlyBody body = (HeavenlyBody) o;
-        if (body.bodyType.equals(((HeavenlyBody) o).bodyType)){
-        return Objects.equals(getName(), body.getName());}
-        else return false;
+
+        return this.key.equals(body.getKey());
+
     }
 
     @Override
     public final int hashCode() {
-        return this.getName().hashCode()+this.bodyType.hashCode()+57;
+        return this.key.hashCode();
     }
 
     @Override
     public String toString() {
-        return  getName()+(" (")+getBodyType()+"): " + getOrbitalPeriod();
+        return  this.key.getName()+(" (")+key.getBodyType()+"): " + getOrbitalPeriod();
+    }
+
+    public static final class Key{
+        private final String name;
+        private final String bodyType;
+
+        public Key(String name, String bodyType) {
+            this.name = name;
+            this.bodyType = bodyType;
+        }
+
+        public String getName() {
+            return name;
+        }
+
+        public String getBodyType() {
+            return bodyType;
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            if (o == null || getClass() != o.getClass()) return false;
+            Key key = (Key) o;
+            return Objects.equals(getName(), key.getName()) &&
+                    Objects.equals(getBodyType(), key.getBodyType());
+        }
+
+        @Override
+        public int hashCode() {
+            return Objects.hash(getName(), getBodyType());
+        }
     }
 }
