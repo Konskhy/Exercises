@@ -1,13 +1,11 @@
 package com.company.konski;
 
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 public class StockList {
     private Map <String,StockItem>list;
     public StockList(){
-        this.list = new HashMap<>();
+        this.list = new TreeMap<>();
     }
     public int addStock(StockItem item){
         if (item!=null){
@@ -22,10 +20,24 @@ public class StockList {
     }
     public int sellStock(StockItem item, int quantity){
         StockItem toSell = list.getOrDefault(item.getName(),null);
-        if (toSell!=null && toSell.getStockQuantity()>=quantity && quantity>0){
-            toSell.adjustStock(-quantity);
-            return toSell.getStockQuantity();
-        } return 0;
+        if (toSell!=null && quantity>0) {
+            if (toSell.getStockQuantity() >= quantity) {
+                toSell.adjustStock(-quantity);
+                return toSell.getStockQuantity();
+            }
+            System.out.println("Not enough " + toSell.getName() + " in stock");
+            return 0;
+        }return 0;
+    }
+    public int reserveStock(StockItem item, int quantity){
+        StockItem toAdd = list.getOrDefault(item.getName(), null);
+        if (toAdd!=null){
+            if (toAdd.getStockQuantity()-toAdd.getReserved()>=quantity){
+                toAdd.reserveItem(quantity);
+                return quantity;
+            }else System.out.println("Not enough "+toAdd.getName()+" in stock");
+            return 0;
+        }return 0;
     }
 
     public Map<String, StockItem> listItems() {
@@ -42,10 +54,10 @@ public class StockList {
         for (Map.Entry<String,StockItem> item:list.entrySet()){
             StockItem stockItem = item.getValue();
             double itemValue = stockItem.getPrice()*stockItem.getStockQuantity();
-            s= s + stockItem + ". There are "+stockItem.getStockQuantity()+" in stock. Value of the items:";
-            s= s+ itemValue + "\n";
+            s= s + stockItem.getName() + ". There are "+stockItem.getStockQuantity()+" in stock. Value of the items:";
+            s= s+ String.format("%.2f",itemValue) + "\n";
             totalCost+=itemValue;
         }
-        return s + "Total stock value: " + totalCost;
+        return s + "Total stock value: " + String.format("%.2f",totalCost);
     }
 }
