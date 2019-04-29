@@ -18,14 +18,17 @@
     </left>
     <center>
         <VBox>
-            <TextArea fx:id="detailsTextArea">
+            <TextArea fx:id="detailsTextArea" VBox.vgrow="ALWAYS">
 
             </TextArea>
             <HBox>
                 <Label text="Due:">
                     <font>
-                        <Font name = "Arial" size = "20"></Font>
+                        <Font name = "Arial bold" size = "20"></Font>
                     </font>
+                </Label>
+                <Label fx:id="deadline">
+                    <font><Font name="Arial" size="20"></Font></font>
                 </Label>
             </HBox>
         </VBox>

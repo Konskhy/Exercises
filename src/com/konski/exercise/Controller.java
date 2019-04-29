@@ -3,8 +3,10 @@ package com.konski.exercise;
 import com.konski.exercise.datamodel.TodoItem;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.SelectionMode;
+import javafx.scene.control.TextArea;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -14,6 +16,10 @@ public class Controller {
     private List<TodoItem> todoItems;
     @FXML
     private ListView<TodoItem> todoListView;
+    @FXML
+    private TextArea detailsTextArea;
+    @FXML
+    private Label deadline;
 
     public void initialize(){
         TodoItem item1 = new TodoItem("Resupply weed", "Ring neighbor to arrange some weed, we're running low",
@@ -38,8 +44,11 @@ public class Controller {
         todoListView.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
     }
     @FXML
-    public void handleListView(ActionEvent e){
+    public void handleListView(){
         TodoItem item = todoListView.getSelectionModel().getSelectedItem();
+        detailsTextArea.setText(item.getDetails());
+        deadline.setText(item.getDeadline().toString());
     }
+
 
 }
