@@ -12,7 +12,7 @@
 <BorderPane fx:controller="com.konski.exercise.Controller"
             xmlns:fx="http://javafx.com/fxml">
     <left>
-        <ListView fx:id="todoListView" onMouseClicked="#handleListView">
+        <ListView fx:id="todoListView">
 
         </ListView>
     </left>
@@ -21,13 +21,13 @@
             <TextArea fx:id="detailsTextArea" VBox.vgrow="ALWAYS">
 
             </TextArea>
-            <HBox>
-                <Label text="Due:">
+            <HBox style="-fx-background-color:white">
+                <Label text="Due:  ">
                     <font>
                         <Font name = "Arial bold" size = "20"></Font>
                     </font>
                 </Label>
-                <Label fx:id="deadline">
+                <Label fx:id="deadline" style="-fx-background-color:white">
                     <font><Font name="Arial" size="20"></Font></font>
                 </Label>
             </HBox>
