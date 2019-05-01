@@ -6,24 +6,29 @@ import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Label;
-import javafx.scene.control.ListView;
-import javafx.scene.control.SelectionMode;
-import javafx.scene.control.TextArea;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.control.*;
+import javafx.scene.layout.BorderPane;
+import javafx.stage.Window;
 
+import java.io.IOException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 public class Controller {
-    private List<TodoItem> todoItems;
+//    private List<TodoItem> todoItems;
     @FXML
     private ListView<TodoItem> todoListView;
     @FXML
     private TextArea detailsTextArea;
     @FXML
     private Label deadline;
+    @FXML
+    private BorderPane mainBorderPane;
 
     public void initialize(){
 //        TodoItem item1 = new TodoItem("Resupply weed", "Ring neighbor to arrange some weed, we're running low",
@@ -61,6 +66,26 @@ public class Controller {
         todoListView.getItems().setAll(TodoData.getInstance().getTodoItems());
         todoListView.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
         todoListView.getSelectionModel().selectFirst();
+    }
+    @FXML
+    public void showNewItemDialog(){
+        Dialog<ButtonType> dialog = new Dialog<>();
+        dialog.initOwner(mainBorderPane.getScene().getWindow());
+        try{
+            Parent root = FXMLLoader.load(getClass().getResource("todoItemDialog.fxml"));
+            dialog.getDialogPane().setContent(root);
+        }catch (IOException e){
+            System.out.println("Could't load dialog");
+            e.printStackTrace();
+            return;
+        }
+        dialog.getDialogPane().getButtonTypes().add(ButtonType.OK);
+        dialog.getDialogPane().getButtonTypes().add(ButtonType.CANCEL);
+
+        Optional<ButtonType> result = dialog.showAndWait();
+        if (result.isPresent()&&result.get()==ButtonType.OK){
+            System.out.println("OK button pressed");
+        }else System.out.println("CANCEL button pressed");
     }
     @FXML
     public void handleListView(){
