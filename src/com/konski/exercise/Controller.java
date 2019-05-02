@@ -4,19 +4,16 @@ import com.konski.exercise.datamodel.TodoData;
 import com.konski.exercise.datamodel.TodoItem;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
 import javafx.scene.control.*;
 import javafx.scene.layout.BorderPane;
-import javafx.stage.Window;
+import javafx.scene.paint.Color;
+import javafx.util.Callback;
 
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Optional;
 
 public class Controller {
@@ -48,32 +45,53 @@ public class Controller {
 //        todoItems.add(item3);
 //        todoItems.add(item4);
 //        todoItems.add(item5);
-//
 //        TodoData.getInstance().setTodoItems(todoItems);
 
-        todoListView.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<TodoItem>() {
-            @Override
-            public void changed(ObservableValue<? extends TodoItem> observableValue, TodoItem todoItem, TodoItem newItem) {
-                if (newItem!=null){
-                    TodoItem item = todoListView.getSelectionModel().getSelectedItem();
-                    detailsTextArea.setText(item.getDetails());
-                    DateTimeFormatter df = DateTimeFormatter.ofPattern("MMMM d, yyyy");
-                    deadline.setText(item.getDeadline().format(df));
+            todoListView.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<TodoItem>() {
+                @Override
+                public void changed(ObservableValue<? extends TodoItem> observableValue, TodoItem todoItem, TodoItem newItem) {
+                    if (newItem != null) {
+                        TodoItem item = todoListView.getSelectionModel().getSelectedItem();
+                            detailsTextArea.setText(item.getDetails());
+                            DateTimeFormatter df = DateTimeFormatter.ofPattern("MMMM d, yyyy");
+                            deadline.setText(item.getDeadline().format(df));
+                    }
                 }
+            });
+        todoListView.setItems(TodoData.getInstance().getTodoItems());
+        todoListView.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
+        todoListView.getSelectionModel().selectFirst();
+        todoListView.setCellFactory(new Callback<ListView<TodoItem>, ListCell<TodoItem>>() {
+            @Override
+            public ListCell<TodoItem> call(ListView<TodoItem> todoItemListView) {
+                ListCell<TodoItem> cell = new ListCell<>() {
+                    @Override
+                    protected void updateItem(TodoItem item, boolean empty) {
+                        super.updateItem(item, empty);
+                        if (empty) setText(null);
+                        else setText(item.getDescription());
+                        if (item.getDeadline().equals(LocalDate.now())) {
+                            setTextFill(Color.RED);
+                        }
+//                        else if (item.getDeadline().compareTo((LocalDate.now().plusDays(3)))<0)
+//                            setTextFill((Color.ORANGE));
+                    }
+                };
+                return cell;
             }
         });
 
-        todoListView.getItems().setAll(TodoData.getInstance().getTodoItems());
-        todoListView.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
-        todoListView.getSelectionModel().selectFirst();
     }
     @FXML
     public void showNewItemDialog(){
         Dialog<ButtonType> dialog = new Dialog<>();
         dialog.initOwner(mainBorderPane.getScene().getWindow());
+        dialog.setTitle("Add new item");
+        FXMLLoader fxmlLoader = new FXMLLoader();
+        fxmlLoader.setLocation(getClass().getResource("todoItemDialog.fxml"));
         try{
-            Parent root = FXMLLoader.load(getClass().getResource("todoItemDialog.fxml"));
-            dialog.getDialogPane().setContent(root);
+//            Parent root = FXMLLoader.load(getClass().getResource("todoItemDialog.fxml"));
+            dialog.getDialogPane().setContent(fxmlLoader.load());
         }catch (IOException e){
             System.out.println("Could't load dialog");
             e.printStackTrace();
@@ -84,6 +102,10 @@ public class Controller {
 
         Optional<ButtonType> result = dialog.showAndWait();
         if (result.isPresent()&&result.get()==ButtonType.OK){
+            DialogController controller = fxmlLoader.getController();
+            TodoItem newItem = controller.processResults();
+//            todoListView.getItems().setAll(TodoData.getInstance().getTodoItems());
+            todoListView.getSelectionModel().select(newItem);
             System.out.println("OK button pressed");
         }else System.out.println("CANCEL button pressed");
     }

@@ -6,17 +6,18 @@
             xmlns:fx="http://javafx.com/fxml"
             fx:controller="com.konski.exercise.DialogController">
             <!--prefHeight="400.0" prefWidth="600.0">-->
+
     <headerText>
         Enter data for the new task
     </headerText>
     <content>
         <GridPane vgap="10" hgap="10">
             <Label text="Short description:" GridPane.rowIndex="0" GridPane.columnIndex="0"/>
-            <TextField GridPane.rowIndex="0" GridPane.columnIndex="1" />
+            <TextField fx:id="shortDescription" GridPane.rowIndex="0" GridPane.columnIndex="1" />
             <Label text="Long description:" GridPane.rowIndex="1" GridPane.columnIndex="0"/>
-            <TextArea GridPane.rowIndex="1" GridPane.columnIndex="1"/>
+            <TextArea fx:id="longDescriptionArea" GridPane.rowIndex="1" GridPane.columnIndex="1"/>
             <Label text="Deadline:" GridPane.rowIndex="2" GridPane.columnIndex="0"/>
-            <DatePicker GridPane.rowIndex="2" GridPane.columnIndex="1"/>
+            <DatePicker fx:id="deadlinePicker" GridPane.rowIndex="2" GridPane.columnIndex="1"/>
         </GridPane>
     </content>
 </DialogPane>

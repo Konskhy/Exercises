@@ -1,5 +1,3 @@
-Resupply weed	Ring neighbor to arrange some weed, we're running low	30-04-2019
-Java Project	Finish the project, cleanup, annotations, documentation	05-05-2019
-Laundry	Do the bleedin laundry, don't forget the fencing gear	01-05-2019
-Ring mom	Check what's the story with first communion arrangements	15-05-2019
-Communion	Travel to Poland for Zosia's first communion	25-05-2019
+Avcom branding	Produce mockup for Sprinter MWB van, artwork already in	12-05-2019
+JavaFX	Finish JavaFX project, cleanup, annotations, comments and move on	04-05-2019
+Laundry	Do the bleeding laundry, don't forget fencing gear as usual	02-05-2019
