@@ -4,6 +4,8 @@ import com.konski.exercise.datamodel.TodoData;
 import com.konski.exercise.datamodel.TodoItem;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.*;
@@ -26,6 +28,8 @@ public class Controller {
     private Label deadline;
     @FXML
     private BorderPane mainBorderPane;
+    @FXML
+    private ContextMenu listContextMenu;
 
     public void initialize(){
 //        TodoItem item1 = new TodoItem("Resupply weed", "Ring neighbor to arrange some weed, we're running low",
@@ -46,8 +50,17 @@ public class Controller {
 //        todoItems.add(item4);
 //        todoItems.add(item5);
 //        TodoData.getInstance().setTodoItems(todoItems);
-
-            todoListView.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<TodoItem>() {
+        listContextMenu = new ContextMenu();
+        MenuItem deleteListItem = new MenuItem("Delete");
+        deleteListItem.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent actionEvent) {
+                TodoItem item = todoListView.getSelectionModel().getSelectedItem();
+                deleteItem(item);
+            }
+        });
+        listContextMenu.getItems().addAll(deleteListItem);
+        todoListView.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<TodoItem>() {
                 @Override
                 public void changed(ObservableValue<? extends TodoItem> observableValue, TodoItem todoItem, TodoItem newItem) {
                     if (newItem != null) {
@@ -69,14 +82,24 @@ public class Controller {
                     protected void updateItem(TodoItem item, boolean empty) {
                         super.updateItem(item, empty);
                         if (empty) setText(null);
-                        else setText(item.getDescription());
-                        if (item.getDeadline().equals(LocalDate.now())) {
-                            setTextFill(Color.RED);
-                        }
-//                        else if (item.getDeadline().compareTo((LocalDate.now().plusDays(3)))<0)
-//                            setTextFill((Color.ORANGE));
+                        else
+                            { setText(item.getDescription());
+
+                                if (item.getDeadline().isBefore(LocalDate.now().plusDays(1))) {
+                                setTextFill(Color.RED);
+                                } else if (item.getDeadline().compareTo((LocalDate.now().plusDays(3)))<0)
+                                        setTextFill((Color.ORANGE));
+                            }
                     }
                 };
+                cell.emptyProperty().addListener(
+                        (obs,wasEmpty,isNowEmpty)->{
+                            if(isNowEmpty){
+                                cell.setContextMenu(null);
+                            }else
+                                cell.setContextMenu(listContextMenu);
+                        }
+                );
                 return cell;
             }
         });
@@ -114,6 +137,16 @@ public class Controller {
         TodoItem item = todoListView.getSelectionModel().getSelectedItem();
         detailsTextArea.setText(item.getDetails());
         deadline.setText(item.getDeadline().toString());
+    }
+    public void deleteItem(TodoItem item){
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Delete Item");
+        alert.setHeaderText("Delete item:" + item.getDescription());
+        alert.setContentText("Are You sure?");
+        Optional<ButtonType> result = alert.showAndWait();
+        if (result.isPresent()&&result.get()==ButtonType.OK)
+            TodoData.getInstance().deleteItem(item);
+
     }
 
 

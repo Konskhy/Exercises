@@ -20,7 +20,7 @@ public class TodoData {
     private DateTimeFormatter formatter;
 
     private TodoData() {
-        formatter=DateTimeFormatter.ofPattern("dd-MM-yyyy");
+        formatter=DateTimeFormatter.ofPattern("MMMM d, yyyy");
     }
 
     public static TodoData getInstance(){
@@ -74,5 +74,8 @@ public class TodoData {
             if (bw!=null)
                 bw.close();
         }
+    }
+    public void deleteItem(TodoItem item){
+        todoItems.remove(item);
     }
 }
