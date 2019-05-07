@@ -42,13 +42,13 @@ public class Controller {
 
     private FilteredList<TodoItem> filteredList;
 
-    public Predicate<TodoItem> todaysItems = new Predicate<TodoItem>() {
+    private Predicate<TodoItem> todaysItems = new Predicate<TodoItem>() {
         @Override
         public boolean test(TodoItem todoItem) {
             return (todoItem.getDeadline().equals(LocalDate.now()));
         }
     };
-    public Predicate<TodoItem> allItems = new Predicate<TodoItem>() {
+    private Predicate<TodoItem> allItems = new Predicate<TodoItem>() {
         @Override
         public boolean test(TodoItem todoItem) {
             return true;
@@ -86,6 +86,8 @@ public class Controller {
             }
         });
         listContextMenu.getItems().addAll(deleteListItem);
+
+
         todoListView.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<TodoItem>() {
                 @Override
                 public void changed(ObservableValue<? extends TodoItem> observableValue, TodoItem todoItem, TodoItem newItem) {
@@ -109,29 +111,36 @@ public class Controller {
         todoListView.setItems(sortedList);
         todoListView.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
         todoListView.getSelectionModel().selectFirst();
-        todoListView.setCellFactory(new Callback<ListView<TodoItem>, ListCell<TodoItem>>() {
+        todoListView.setCellFactory(new Callback<>() {
             @Override
             public ListCell<TodoItem> call(ListView<TodoItem> todoItemListView) {
+
                 ListCell<TodoItem> cell = new ListCell<>() {
                     @Override
                     protected void updateItem(TodoItem item, boolean empty) {
                         super.updateItem(item, empty);
-                        if (empty) setText(null);
-                        else
-                            { setText(item.getDescription());
+                        if (empty) {
+                            setText(null);
+                            setTextFill(Color.BLACK);
 
-                                if (item.getDeadline().isBefore(LocalDate.now().plusDays(1))) {
+
+                        } else {
+                            setText(item.getDescription());
+
+                            if (item.getDeadline().isBefore(LocalDate.now().plusDays(1))) {
                                 setTextFill(Color.RED);
-                                } else if (item.getDeadline().compareTo((LocalDate.now().plusDays(3)))<0)
-                                        setTextFill((Color.ORANGE));
+                            } else if (item.getDeadline().compareTo((LocalDate.now().plusDays(3))) < 0) {
+                                setTextFill((Color.ORANGE));
+
                             }
+                        }
                     }
                 };
                 cell.emptyProperty().addListener(
-                        (obs,wasEmpty,isNowEmpty)->{
-                            if(isNowEmpty){
+                        (obs, wasEmpty, isNowEmpty) -> {
+                            if (isNowEmpty) {
                                 cell.setContextMenu(null);
-                            }else
+                            } else
                                 cell.setContextMenu(listContextMenu);
                         }
                 );
@@ -175,12 +184,13 @@ public class Controller {
         }
     }
 
-    @FXML
-    public void handleListView(){
-        TodoItem item = todoListView.getSelectionModel().getSelectedItem();
-        detailsTextArea.setText(item.getDetails());
-        deadline.setText(item.getDeadline().toString());
-    }
+//    @FXML
+//    public void handleListView(){
+//        TodoItem item = todoListView.getSelectionModel().getSelectedItem();
+//        detailsTextArea.setText(item.getDetails());
+//        deadline.setText(item.getDeadline().toString());
+//    }
+
     public void handleToggleButton(){
         TodoItem selectedItem = todoListView.getSelectionModel().getSelectedItem();
         if (filterToggleButton.isSelected()){
@@ -198,7 +208,7 @@ public class Controller {
 
     }
 
-    public void deleteItem(TodoItem item){
+    private void deleteItem(TodoItem item){
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setTitle("Delete Item");
         alert.setHeaderText("Delete item:" + item.getDescription());
