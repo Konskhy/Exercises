@@ -13,22 +13,43 @@
 <?import javafx.scene.control.Menu?>
 <?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.control.SeparatorMenuItem?>
+<?import javafx.scene.control.ToolBar?>
+<?import javafx.scene.control.Tooltip?>
+<?import javafx.scene.control.ToggleButton?>
 <BorderPane fx:id="mainBorderPane" fx:controller="com.konski.exercise.Controller"
             xmlns:fx="http://javafx.com/fxml">
     <top>
-        <MenuBar>
-            <Menu text="File">
-                <items>
-                    <MenuItem text="New..." onAction="#showNewItemDialog"/>
-                    <SeparatorMenuItem/>
-                    <MenuItem text="Exit"/>
-                </items>
-            </Menu>
+        <VBox>
+            <MenuBar>
+                <Menu text="File">
+                    <items>
+                        <MenuItem text="New..." onAction="#showNewItemDialog"/>
+                        <SeparatorMenuItem/>
+                        <MenuItem text="Exit" onAction="#handleExit"/>
+                    </items>
+                </Menu>
+            </MenuBar>
+            <ToolBar>
+                <HBox>
+                    <Button text="New.." onAction="#showNewItemDialog">
+                    <tooltip>
+                        <Tooltip text="Add new item"/>
+                    </tooltip>
+                    </Button>
+                    <ToggleButton fx:id="filterToggleButton" text="Today's" onAction="#handleToggleButton">
+                        <tooltip>
+                            <Tooltip text="Switch between all and todays tasks"/>
+                        </tooltip>
+                    </ToggleButton>
+                </HBox>
 
-        </MenuBar>
+            </ToolBar>
+
+
+        </VBox>
     </top>
     <left>
-        <ListView fx:id="todoListView">
+        <ListView fx:id="todoListView" onKeyPressed="#handleKeyPressed">
 
         </ListView>
     </left>
